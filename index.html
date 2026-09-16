@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>I Love You ❤️</title>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize", resize);
+
+let progress = 0;
+let scale = 11;
+
+function draw() {
+
+    // Clear screen
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    ctx.fillStyle = "#ffb6c1";
+    ctx.font = "bold 8px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Draw multiple hearts
+    for (let s = 11; s <= scale; s += 0.5) {
+
+        for (let i = 0; i < progress; i++) {
+
+            const angle = i * (Math.PI * 2) / 120;
+
+            const x =
+                16 * Math.pow(Math.sin(angle), 3) * s;
+
+            const y =
+                (
+                    13 * Math.cos(angle)
+                    - 5 * Math.cos(2 * angle)
+                    - 2 * Math.cos(3 * angle)
+                    - Math.cos(4 * angle)
+                ) * s;
+
+            ctx.fillText(
+                "I love you",
+                centerX + x,
+                centerY - y
+            );
+        }
+    }
+
+    progress++;
+
+    if (progress > 120) {
+        progress = 0;
+
+        if (scale < 16) {
+            scale += 0.2;
+        } else {
+            scale = 11;
+        }
+    }
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>
