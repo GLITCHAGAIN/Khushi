@@ -1,105 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>KHUSHIII ❤️</title>
-
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: black;
-        }
-
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorry Khushi 💗</title>
+  <style>
+    :root {
+      --pink: #ff5d91;
+      --pink-dark: #db356e;
+      --cream: #fff8f7;
+      --ink: #54283c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 24px;
+      font-family: ui-rounded, "Trebuchet MS", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 20%, #ffe2ec 0, transparent 28%),
+        radial-gradient(circle at 85% 80%, #ffd9e5 0, transparent 30%),
+        linear-gradient(135deg, #fff8f7, #fff0f4 55%, #fff9f2);
+    }
+    .sparkle {
+      position: fixed;
+      z-index: 0;
+      opacity: .6;
+      pointer-events: none;
+      animation: float 7s ease-in-out infinite;
+      filter: drop-shadow(0 4px 8px #ff7eaa33);
+    }
+    .sparkle:nth-child(1) { top: 10%; left: 9%; font-size: 28px; animation-delay: -1s; }
+    .sparkle:nth-child(2) { top: 18%; right: 10%; font-size: 21px; animation-delay: -3s; }
+    .sparkle:nth-child(3) { bottom: 12%; left: 13%; font-size: 24px; animation-delay: -2s; }
+    .sparkle:nth-child(4) { bottom: 17%; right: 12%; font-size: 32px; animation-delay: -4s; }
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 560px);
+      padding: clamp(28px, 6vw, 52px) clamp(22px, 5vw, 44px);
+      text-align: center;
+      border: 1px solid #ffffffd9;
+      border-radius: 30px;
+      background: #ffffffc9;
+      box-shadow: 0 24px 70px #c94e7820, inset 0 1px 0 #fff;
+      backdrop-filter: blur(14px);
+      animation: pop-in .8s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .heart-wrap {
+      width: 94px;
+      height: 94px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 28px;
+      background: linear-gradient(145deg, #ff91b5, #ff5d91);
+      box-shadow: 0 12px 28px #ff5d9140;
+      transform: rotate(-5deg);
+    }
+    .heart { font-size: 48px; transform: rotate(5deg); animation: heartbeat 1.5s ease-in-out infinite; }
+    .eyebrow {
+      margin: 0 0 9px;
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      color: var(--pink-dark);
+      font-size: 11px;
+      font-weight: 800;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(33px, 8vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+      color: #592b40;
+    }
+    h1 span { color: var(--pink-dark); }
+    .subtitle {
+      margin: 18px auto 0;
+      max-width: 390px;
+      color: #805568;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+    .divider {
+      width: 68px;
+      height: 3px;
+      margin: 24px auto;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #ffb6cc, var(--pink));
+    }
+    .message {
+      margin: 0 auto;
+      padding: 17px 19px;
+      max-width: 420px;
+      border: 1px solid #ffe0e9;
+      border-radius: 18px;
+      background: #fff7fa;
+      color: #75445a;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .message strong { color: var(--pink-dark); }
+    button {
+      margin-top: 25px;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 25px;
+      background: linear-gradient(135deg, #ff78a5, #f0447d);
+      box-shadow: 0 10px 22px #f0447d33;
+      color: white;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    button:hover { transform: translateY(-3px); box-shadow: 0 14px 28px #f0447d44; }
+    button:active { transform: scale(.98); }
+    .hidden-note {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .6s ease, opacity .45s ease, margin .45s ease;
+      color: #9a355b;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+    .hidden-note.show { max-height: 160px; margin-top: 20px; opacity: 1; }
+    .signature { margin-top: 20px; font-size: 13px; color: #a16d82; }
+    .floating-heart {
+      position: fixed;
+      bottom: -35px;
+      z-index: 4;
+      pointer-events: none;
+      animation: rise 3.2s ease-in forwards;
+    }
+    @keyframes heartbeat { 0%,100% { transform: rotate(5deg) scale(1); } 14% { transform: rotate(5deg) scale(1.12); } 28% { transform: rotate(5deg) scale(1); } 42% { transform: rotate(5deg) scale(1.09); } }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-14px) rotate(8deg); } }
+    @keyframes pop-in { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes rise { to { transform: translateY(-110vh) rotate(25deg); opacity: 0; } }
+    @media (max-width: 420px) {
+      body { padding: 16px; }
+      .card { border-radius: 24px; }
+      .subtitle { font-size: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="sparkle" aria-hidden="true">💗</div>
+  <div class="sparkle" aria-hidden="true">✨</div>
+  <div class="sparkle" aria-hidden="true">💕</div>
+  <div class="sparkle" aria-hidden="true">🌷</div>
 
-<canvas id="canvas"></canvas>
+  <main class="card">
+    <div class="heart-wrap"><div class="heart">💖</div></div>
+    <p class="eyebrow">A little message from my heart</p>
+    <h1>Sorry, <span>Khushi</span> 🥺</h1>
+    <p class="subtitle">Meri devi jii, meri jaanu…<br />please gussa thoda sa kam kar do na. 🥹</p>
+    <div class="divider"></div>
+    <p class="message">
+      Mujhse galti ho gayi toh <strong>dil se sorry</strong>. Mera intention tumhe hurt karna bilkul nahi tha.
+      Tum mere liye bahut special ho, aur tumhari smile mere liye sabse pyaari hai. 💗
+    </p>
+    <button id="forgiveBtn" type="button">Ek baar smile kar do? 💞</button>
+    <div class="hidden-note" id="hiddenNote" aria-live="polite">
+      Please maan jao, meri pyaari Khushi. 🥺🌷<br />No more sad face… bas ek si cute si smile, please? 💖
+    </div>
+    <div class="signature">Made with lots of sorrys &amp; love ♡</div>
+  </main>
 
-<script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+  <script>
+    const button = document.getElementById('forgiveBtn');
+    const note = document.getElementById('hiddenNote');
+    let clicked = false;
 
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
+    button.addEventListener('click', () => {
+      note.classList.add('show');
+      button.textContent = clicked ? 'Sending more hugs 🤗' : 'Thank you, meri jaanu 💗';
+      clicked = true;
 
-resize();
-window.addEventListener("resize", resize);
-
-let progress = 0;
-let scale = 11;
-
-function draw() {
-
-    // Clear screen
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    ctx.fillStyle = "#ffb6c1";
-    ctx.font = "bold 8px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-
-    // Draw multiple hearts
-    for (let s = 11; s <= scale; s += 0.5) {
-
-        for (let i = 0; i < progress; i++) {
-
-            const angle = i * (Math.PI * 2) / 120;
-
-            const x =
-                16 * Math.pow(Math.sin(angle), 3) * s;
-
-            const y =
-                (
-                    13 * Math.cos(angle)
-                    - 5 * Math.cos(2 * angle)
-                    - 2 * Math.cos(3 * angle)
-                    - Math.cos(4 * angle)
-                ) * s;
-
-            ctx.fillText(
-                "PLEASE JAANUU MAAF KRDOO NAAA",
-                centerX + x,
-                centerY - y
-            );
-        }
-    }
-
-    progress++;
-
-    if (progress > 120) {
-        progress = 0;
-
-        if (scale < 16) {
-            scale += 0.2;
-        } else {
-            scale = 11;
-        }
-    }
-
-    requestAnimationFrame(draw);
-}
-
-draw();
-</script>
-
+      for (let i = 0; i < 18; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'floating-heart';
+        heart.textContent = ['💗', '💖', '💕', '💘', '✨'][Math.floor(Math.random() * 5)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (16 + Math.random() * 22) + 'px';
+        heart.style.animationDuration = (2.3 + Math.random() * 1.8) + 's';
+        document.body.appendChild(heart);
+        heart.addEventListener('animationend', () => heart.remove());
+      }
+    });
+  </script>
 </body>
 </html>
